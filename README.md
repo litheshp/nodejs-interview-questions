@@ -1,11 +1,14 @@
 # Node.js Interview Questions
 
-*Click <img src="assets/star.png" width="18" height="18" align="absmiddle" title="Star" /> if you like the project. Pull Request are highly appreciated.*
+*Click <img src="assets/star.png" width="18" height="18" align="absmiddle" title="Star" /> if you like the project. Pull Requests are highly appreciated.*
 
 ## Table of Contents
 
 * *[NodeJS APIs](nodejs-api.md)*
 * *[NodeJS Coding Practice](nodejs-programming.md)*
+* *[NodeJS Commands](nodejs-commands.md)*
+
+<br/>
 
 | Sl.No|  Questions       |
 |------|------------------|
@@ -89,6 +92,7 @@
 | 78. |[How to generate and verify checksum of the given string in Nodejs](#q-how-to-generate-and-verify-checksum-of-the-given-string-in-nodejs)|
 | 79. |[What is Callback function in node.js?](#q-what-is-callback-function-in-nodejs)|
 | 80. |[What is asynchronous programming in node.js?](#q-what-is-asynchronous-programming-in-nodejs)|
+| 81. |[How to implement asymmetric cryptography when signing and verify JSON Web Token (JWT) for authentication in node js?](#q-how-to-implement-asymmetric-cryptography-when-signing-and-verifying-json-web-token-jwt-for-authentication-in-node-js) |
 
 <br/>
 
@@ -134,16 +138,30 @@ Node.js runs in a single process and the application code runs in a single threa
 
 ## Q. ***What are the data types in Node.js?***
 
-*Primitive Types*
+Just like JS, there are two categories of data types in Node: Primitives and Objects.
+
+*Primitives*
 
 * String
 * Number
+* Bigint
 * Boolean
 * Undefined
 * Null
-* RegExp
+* Symbol
 
-* `Buffer`: Node.js includes an additional data type called Buffer (not available in browser\'s JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network.
+*Objects* 
+
+* Function
+
+* Array
+
+* `Buffer`: Node.js includes an additional data type called Buffer (not available in browser\'s JavaScript). Buffer is mainly used to store binary data, while reading from a file or receiving packets over the network. `Buffer` is a class.
+
+
+* other regular objects
+
+
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -282,7 +300,11 @@ req.end()
 
 ## Q. ***How to execute an external program from within Node.js?***
 
-*ToDo*
+const { exec } = require('child_process');
+
+exec('"/path/to/test file/test.sh" arg1 arg2');
+
+exec('echo "The \\$HOME variable is $HOME"');
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -347,7 +369,7 @@ Node JS Platform does not follow Request/Response Multi-Threaded Stateless Model
 * Node JS Web Server receives those requests and places them into a Queue. It is known as “Event Queue”.
 * Node JS Web Server internally has a Component, known as “Event Loop”. Why it got this name is that it uses indefinite loop to receive requests and process them. 
 * Event Loop uses Single Thread only. It is main heart of Node JS Platform Processing Model.
-* Even Loop checks any Client Request is placed in Event Queue. If no, then wait for incoming requests for indefinitely.
+* Event Loop checks any Client Request is placed in Event Queue. If no, then wait for incoming requests for indefinitely.
 * If yes, then pick up one Client Request from Event Queue
     * Starts process that Client Request
     * If that Client Request Does Not requires any Blocking IO Operations, then process everything, prepare response and send it back to client.
@@ -400,11 +422,6 @@ myNew(function(err, res){
     console.log("I got back from callback",err, res);
 });
 ```
-
-
-<div align="right">
-    <b><a href="#">↥ back to top</a></b>
-</div>
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -509,7 +526,7 @@ async.waterfall([
     },
     function(arg1, callback) {
         //do More
-        // arg1 now equals 'result'
+        // arg1 now equals result
         callback(null, 'done');
     },
     function(arg1, callback) {
@@ -859,7 +876,7 @@ The architecture of asynchronous explains that the message sent will not give th
 
 **2. Non-Blocking**
 
-Nonblocking immediately responses with whatever data available. Moreover, it does not block any execution and keeps on running as per the requests. If an answer could not be retrieved than in those cases API returns immediately with an error. Nonblocking is mostly used with I/O(input/output). Node.js is itself based on nonblocking I/O model. There are few ways of communication that a nonblocking I/O has completed. The callback function is to be called when the operation is completed. Nonblocking call uses the help of javascript which provides a callback function.
+Nonblocking immediately responses with whatever data available. Moreover, it does not block any execution and keeps on running as per the requests. If an answer could not be retrieved then in those cases API returns immediately with an error. Nonblocking is mostly used with I/O(input/output). Node.js is itself based on nonblocking I/O model. There are few ways of communication that a nonblocking I/O has completed. The callback function is to be called when the operation is completed. Nonblocking call uses the help of javascript which provides a callback function.
 
 * **Asynchronous VS Non-Blocking**  
 
@@ -1500,7 +1517,7 @@ The `V8` was first designed to increase the performance of the JavaScript execut
 
 ## Q. ***What is chrome v8 engine?***
 
-V8 is the name of the JavaScript engine that powers Google Chrome. It's the thing that takes our JavaScript and executes it while browsing with Chrome. V8 provides the runtime environment in which JavaScript executes. The DOM, and the other Web Platform APIs are provided by the browser.
+V8 is the name of the JavaScript engine that powers Google Chrome. It\'s the thing that takes our JavaScript and executes it while browsing with Chrome. V8 provides the runtime environment in which JavaScript executes. The DOM, and the other Web Platform APIs are provided by the browser.
 
 V8 is Google’s open source high-performance JavaScript and WebAssembly engine, written in C++. It is used in Chrome and in Node.js, among others. It implements ECMAScript and WebAssembly, and runs on Windows 7 or later, macOS 10.12+, and Linux systems that use x64, IA-32, ARM, or MIPS processors. V8 can run standalone, or can be embedded into any C++ application.
 
@@ -1534,7 +1551,7 @@ V8 is Google’s open source high-performance JavaScript and WebAssembly engine,
 
 ## Q. ***Why is LIBUV needed in Node JS?***
 
-LIBUV is a library written in C++ and it's focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
+LIBUV is a library written in C and it\'s focus is on asynchronous I/O. Node.js use this library to interact with OS, system files and networking and also two core features of Node.js called event loop and thread pool are available in this runtime thanks to this library.
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
@@ -1766,7 +1783,7 @@ C:\node>express --view="ejs" nodetest1
 
 **3. Edit Dependencies**
 
-MAKE SURE TO CD INTO YOUR nodetest FOLDER. OK, now we have some basic structure in there, but we're not quite done. You'll note that the express-generator routine created a file called package.json in your nodetest1 directory. Open this up in a text editor and it'll look like this:
+MAKE SURE TO CD INTO YOUR nodetest FOLDER. OK, now we have some basic structure in there, but we're not quite done. You'll note that the express-generator routine created a file called package.json in your nodetest1 directory. Open this up in a text editor and it\'ll look like this:
 ```javascript
 // C:\node\nodetest1\package.json
 {
@@ -1945,7 +1962,7 @@ Please note - before pid. This converts a pid to a group of pids for process kil
 
 Reactor Pattern is an idea of non-blocking I/O operations in Node.js. This pattern provides a handler(in case of Node.js, a callback function) that is associated with each I/O operation. When an I/O request is generated, it is submitted to a demultiplexer.
 
-This demultiplexer is a notification interface that is used to handle concurrency in non-blocking I/O mode and collects every request in form of an event and queues each event in a queue. Thus, the demultiplexer provides the Event Queue, which we often hear. When a request is collected by the demultiplexer, it returns the control back to the system and does not blocks the I/O. At the same time, there is an Event Loop which iterates over the items in the Event Queue. Every event has a callback function associated with it, and that callback function is invoked when the Event Loop iterates.
+This demultiplexer is a notification interface that is used to handle concurrency in non-blocking I/O mode and collects every request in form of an event and queues each event in a queue. Thus, the demultiplexer provides the Event Queue, which we often hear about. When a request is collected by the demultiplexer, it returns the control back to the system and does not blocks the I/O. At the same time, there is an Event Loop which iterates over the items in the Event Queue. Every event has a callback function associated with it, and that callback function is invoked when the Event Loop iterates.
 
 The callback function further mostly have other callbacks associated within representing some asynchronous operations. These operations are inserted in the Event Queue by the demultiplexer and are ready to be processed once the Event Loop iterates over them. That is why calls to other operations must be asynchronous.
 
@@ -3372,6 +3389,127 @@ The `jwt.sign()` method takes a payload and the secret key defined in `config.js
 **Reference:**
 
 * **[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. **_How to implement asymmetric cryptography when signing and verify JSON Web Token (JWT) for authentication in node js?_**
+
+JSON Web Token (JWT) is an open standard that defines a compact and self-contained way of securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed.
+
+There are some advantages of using JWT for authorization:
+
+- Purely stateless. No additional server or infra required to store session information.
+- It can be easily shared among services.
+
+JSON Web Tokens consist of three parts separated by dots (.), which are:
+
+```js
+jwt.sign(payload, secretOrPrivateKey, [options, callback]);
+```
+
+- **Header** - Consists of two parts: the type of token (i.e., JWT) and the signing algorithm (i.e., HS512)
+- **Payload** - Contains the claims that provide information about a user who has been authenticated along with other information such as token expiration time.
+- **Signature** - Final part of a token that wraps in the encoded header and payload, along with the algorithm and a secret
+
+**Installation**
+
+```bash
+npm install jsonwebtoken bcryptjs --save
+```
+
+**Ussage**
+
+1. `mkdir certs` then run `cd certs`
+
+**Inside the certs folder generate public and private key pairs**
+
+```bash
+// Private Key
+
+>> openssl genrsa -out accessTokenPrivatekey.pem 4096
+
+// Public Key
+
+>> openssl rsa -pubout -in accessTokenPrivatekey.pem -out accessTokenPublickey.pem
+
+```
+
+**Example**: AuthController.js
+
+```js
+const express = require('express');
+const router = express.Router();
+const bodyParser = require('body-parser');
+const { readFileSync } = require('fs');
+const User = require('../user/User');
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const config = require('../config');
+
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
+router.post('/register', function (req, res) {
+  const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+
+  User.create(
+    {
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword,
+    },
+    (err, user) => {
+      if (err)
+        return res
+          .status(500)
+          .send('There was a problem registering the user.');
+
+      //Using the fs module get the private key of the accesstoken you created.
+      const ACCESS_TOKEN_PRIV_KEY = readFileSync(
+        './certs/accessTokenPrivateKey.pem',
+        'utf8'
+      );
+
+      // create an access token using the private key pair, and specify the algorithm you will use.
+      const token = jwt.sign({ id: user._id }, ACCESS_TOKEN_PRIV_KEY, {
+        algorithm: 'RS256',
+        expiresIn: 86400, // expires in 24 hours
+      });
+      res.status(200).send({ auth: true, token: token });
+    }
+  );
+});
+```
+
+**To verify a token use the public key**
+
+```js
+const ACCESS_TOKEN_PUB_KEY = readFileSync(
+  './certs/accessTokenPubliKey.pem',
+  'utf-8'
+);
+
+/** Use the Access token Public Key to verify the JWT access token */
+jwt.verify(
+  token,
+  ACCESS_TOKEN_PUB_KEY,
+  { algorithms: ['RS256'] },
+  (err, user) => {
+    console.log(err);
+    if (err) res.status(403);
+    console.log(user);
+  }
+);
+```
+
+The `jwt.sign()` method takes a payload, private key defined in `./certs/accessTokenPrivateKey.pem` and an object which contains other information about the token, this includes the algorithm `{ algorithm: 'RS256'}`(NB: You can also use `HS256` || `HS384` as algorithm values), that will be used in signing as parameters. It creates a unique string of characters representing the payload. In our case, the payload is an object containing only the id of the user.
+
+**Reference:**
+
+- **[https://www.npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**
 
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
